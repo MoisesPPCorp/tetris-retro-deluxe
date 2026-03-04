@@ -43,21 +43,31 @@ Sistema de níveis
 Aumento progressivo de velocidade
 Peças múltiplas (T, O, L, I)
 Rotação de
+
 Detecção de Game Over
+
 Remoção automática de linhas completas
 
 📚 Objetivo Acadêmico
+
 Este projeto foi desenvolvido como atividade prática para aplicação de:
 
 Gráficos primitivos
+
 Estrutura de dados (matriz)
+
 Lógica de colagem
+
 Organização e modularização de código
+
 👨‍💻 Autor(es)
 
 Projeto desenvolvido por:
+
 Moisés Paixão Pereira – RA: R076DI-6
+
 Lucas Silva Sabino – RA: R103170
+
 Instituição de Ensino: UNIP - Universidade Paulista Curso: Ciência da Computação Unidade: Marques Turma: CC5P13
 
 📌 Observação
