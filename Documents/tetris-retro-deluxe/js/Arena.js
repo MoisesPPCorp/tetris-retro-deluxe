@@ -1,4 +1,3 @@
-
 export class Arena {
     constructor(width, height) {
         this.matrix = this.createMatrix(width, height);
@@ -25,18 +24,19 @@ export class Arena {
     sweep() {
         let rowCount = 0;
 
-        outer: for (let y = this.matrix.length - 1; y >= 0; y--) {
-            for (let x = 0; x < this.matrix[y].length; x++) {
-                if (this.matrix[y][x] === 0) {
-                    continue outer;
-                }
+        for (let y = this.matrix.length - 1; y >= 0; y--) {
+
+            if (this.matrix[y].every(value => value !== 0)) {
+
+                this.matrix.splice(y, 1);
+                this.matrix.unshift(new Array(this.matrix[0].length).fill(0));
+
+                rowCount++;
+                y++;
             }
-            const row = this.matrix.splice(y, 1)[0].fill(0);
-            this.matrix.unshift(row);
-            y++;
-            rowCount++;
         }
 
         return rowCount;
     }
+
 }
