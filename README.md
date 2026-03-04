@@ -8,15 +8,10 @@
 🚀 Demonstração
 
     Jogo desenvolvido utilizando apenas:
-
     HTML5
-
     CSS3
-
     JavaScript (Módulos ES6)
-
     API Canvas
-
     solicitarQuadroDeAnimação()
 
 
@@ -108,4 +103,4 @@
     Turma: CC5P13
 
 📌 Observação
-    Projeto desenvolvido exclusivamente com JavaScript puro, sem uso de bibliotecas externas ou motores de jogos.
+        Projeto desenvolvido exclusivamente com JavaScript puro, sem uso de bibliotecas externas ou motores de jogos.
