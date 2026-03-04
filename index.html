@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tetris Retro Deluxe</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            background: #222;
+            color: white;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        canvas {
+            background: #111;
+            border: 2px solid #555;
+            image-rendering: pixelated;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #preview {
+            width: 120px;
+            height: 120px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+            align-items: flex-start;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Tetris Retro Deluxe</h1>
+
+    <div>
+        <button id="startBtn">Iniciar</button>
+        <button id="restartBtn">Reiniciar</button>
+    </div>
+
+    <div class="container">
+
+        <canvas id="tetris" width="240" height="400"></canvas>
+
+        <div>
+            <canvas id="preview" width="120" height="120"></canvas>
+
+            <h3>Pontuação: <span id="score">0</span></h3>
+
+            <h3>🏆 Ranking</h3>
+            <ol id="rankingList"></ol>
+        </div>
+
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+
+</body>
+
+</html>
