@@ -21,21 +21,34 @@
 
 
 🎮 Como Jogar
+    
     ⬅️ Seta Esquerda → Mover para esquerda
+    
     ➡️ Seta Direita → Mover para direita
+    
     ⬇️ Seta Baixo → Acelera descida
+    
     ⬆️ Seta Cima → Rotaciona peça
+    
     O objetivo é completar linhas horizontais para ganhar pontos.
+    
     O jogo termina quando as peças atingem o topo da tela.
 
 
 🧠 Conceitos Aplicados
+    
     ✔ Matriz bidimensional
+    
     ✔ Sistema de instruções
+    
     ✔ Rotação de matriz
+    
     ✔ Loop de animação com requestAnimationFrame
+    
     ✔ Primitivas gráficas com Canvas (fillRect, strokeRect)
+    
     ✔ Organização modular com ES6 Modules
+    
     ✔ Separação de responsabilidades (Arquitetura em Classes)
 
 
@@ -89,7 +102,10 @@
     Projeto desenvolvido por:
     Moisés Paixão Pereira – RA: R076DI-6
     Lucas Silva Sabino – RA: R103170
-    Instituição de Ensino: UNIP - Universidade Paulista Curso: Ciência da Computação Unidade: Marques Turma: CC5P13
+    Instituição de Ensino: UNIP - Universidade Paulista 
+    Curso: Ciência da Computação 
+    Unidade: Marques 
+    Turma: CC5P13
 
 📌 Observação
     Projeto desenvolvido exclusivamente com JavaScript puro, sem uso de bibliotecas externas ou motores de jogos.
