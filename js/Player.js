@@ -1,152 +1,225 @@
 export class Player {
 
     constructor(arena) {
-        this.arena = arena;
-        this.pos = { x: 4, y: 0 };
 
-        this.matrix = null;
-        this.nextMatrix = this.createPiece(this.randomPiece());
+        this.arena = arena
 
-        this.score = 0;
-        this.level = 1;
+        this.pos = { x: 0, y: 0 }
+
+        this.matrix = null
+        this.nextMatrix = null
+
+        this.score = 0
+        this.level = 1
+
+        this.pieces = "TJLOSZI"
+
+        this.reset()
+
     }
 
     createPiece(type) {
 
-        if (type === 'T')
-            return [
-                [0, 1, 0],
-                [1, 1, 1],
-                [0, 0, 0]
-            ];
+        if (type === "T") return [
+            [0, 1, 0],
+            [1, 1, 1],
+            [0, 0, 0]
+        ]
 
-        if (type === 'O')
-            return [
-                [2, 2],
-                [2, 2]
-            ];
+        if (type === "O") return [
+            [2, 2],
+            [2, 2]
+        ]
 
-        if (type === 'L')
-            return [
-                [0, 0, 3],
-                [3, 3, 3],
-                [0, 0, 0]
-            ];
+        if (type === "L") return [
+            [0, 3, 0],
+            [0, 3, 0],
+            [0, 3, 3]
+        ]
 
-        if (type === 'I')
-            return [
-                [4, 4, 4, 4]
-            ];
-    }
+        if (type === "J") return [
+            [0, 4, 0],
+            [0, 4, 0],
+            [4, 4, 0]
+        ]
 
-    randomPiece() {
-        const pieces = 'TOLI';
-        return pieces[Math.floor(Math.random() * pieces.length)];
+        if (type === "I") return [
+            [0, 0, 0, 0],
+            [5, 5, 5, 5],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0]
+        ]
+
+        if (type === "S") return [
+            [0, 6, 6],
+            [6, 6, 0],
+            [0, 0, 0]
+        ]
+
+        if (type === "Z") return [
+            [7, 7, 0],
+            [0, 7, 7],
+            [0, 0, 0]
+        ]
+
     }
 
     reset() {
-        this.matrix = this.nextMatrix;
-        this.nextMatrix = this.createPiece(this.randomPiece());
 
-        this.pos.y = 0;
-        this.pos.x = 4;
+        if (!this.nextMatrix) {
+
+            const type = this.pieces[
+                this.pieces.length * Math.random() | 0
+            ]
+
+            this.matrix = this.createPiece(type)
+
+        } else {
+
+            this.matrix = this.nextMatrix
+
+        }
+
+        const nextType = this.pieces[
+            this.pieces.length * Math.random() | 0
+        ]
+
+        this.nextMatrix = this.createPiece(nextType)
+
+        this.pos.y = 0
+
+        this.pos.x =
+            (this.arena.matrix[0].length / 2 | 0) -
+            (this.matrix[0].length / 2 | 0)
 
         if (this.collide()) {
-            this.arena.matrix.forEach(row => row.fill(0));
-            this.score = 0;
-            this.level = 1;
-            alert("GAME OVER");
+
+            // GAME OVER
+            alert("GAME OVER")
+
+            this.arena.matrix.forEach(row => row.fill(0))
+
+            this.score = 0
+
         }
+
     }
 
-    rotate(dir = 1) {
+    collide() {
 
-        const original = this.matrix;
+        const m = this.matrix
+        const o = this.pos
 
-        let rotated = original[0].map((_, i) =>
-            original.map(row => row[i])
-        );
+        for (let y = 0; y < m.length; y++) {
 
-        if (dir > 0)
-            rotated.forEach(row => row.reverse());
-        else
-            rotated.reverse();
+            for (let x = 0; x < m[y].length; x++) {
 
-        const kicks = [
-            { x: 0, y: 0 },
-            { x: 1, y: 0 },
-            { x: -1, y: 0 },
-            { x: 2, y: 0 },
-            { x: -2, y: 0 },
-            { x: 0, y: -1 }
-        ];
+                if (
+                    m[y][x] !== 0 &&
+                    (
+                        this.arena.matrix[y + o.y] &&
+                        this.arena.matrix[y + o.y][x + o.x]
+                    ) !== 0
+                ) {
 
-        for (let kick of kicks) {
+                    return true
 
-            this.pos.x += kick.x;
-            this.pos.y += kick.y;
+                }
 
-            if (!this.collideMatrix(rotated)) {
-                this.matrix = rotated;
-                return;
             }
 
-            this.pos.x -= kick.x;
-            this.pos.y -= kick.y;
         }
+
+        return false
+
     }
 
     drop() {
 
-        this.pos.y++;
+        this.pos.y++
 
         if (this.collide()) {
 
-            this.pos.y--;
-            this.arena.merge(this);
+            this.pos.y--
 
-            const rows = this.arena.sweep();
-            this.score += rows * 10;
-            this.level = Math.floor(this.score / 100) + 1;
+            this.arena.merge(this)
 
-            this.reset();
+            this.reset()
+
+            this.arena.clearLines(this)
+
         }
+
     }
 
     move(dir) {
-        this.pos.x += dir;
 
-        if (this.collide())
-            this.pos.x -= dir;
-    }
+        this.pos.x += dir
 
-    collideMatrix(matrix) {
+        if (this.collide()) {
 
-        for (let y = 0; y < matrix.length; y++) {
-            for (let x = 0; x < matrix[y].length; x++) {
+            this.pos.x -= dir
 
-                if (matrix[y][x] !== 0) {
-
-                    const newX = x + this.pos.x;
-                    const newY = y + this.pos.y;
-
-                    if (
-                        newX < 0 ||
-                        newX >= this.arena.matrix[0].length ||
-                        newY >= this.arena.matrix.length ||
-                        (this.arena.matrix[newY] &&
-                            this.arena.matrix[newY][newX] !== 0)
-                    ) {
-                        return true;
-                    }
-                }
-            }
         }
 
-        return false;
     }
 
-    collide() {
-        return this.collideMatrix(this.matrix);
+    rotate() {
+
+        const pos = this.pos.x
+
+        let offset = 1
+
+        this.rotateMatrix(this.matrix)
+
+        while (this.collide()) {
+
+            this.pos.x += offset
+
+            offset = -(offset + (offset > 0 ? 1 : -1))
+
+            if (offset > this.matrix[0].length) {
+
+                this.rotateMatrix(this.matrix, -1)
+
+                this.pos.x = pos
+
+                return
+
+            }
+
+        }
+
     }
+
+    rotateMatrix(matrix, dir = 1) {
+
+        for (let y = 0; y < matrix.length; y++) {
+
+            for (let x = 0; x < y; x++) {
+
+                [
+                    matrix[x][y],
+                    matrix[y][x]
+                ] = [
+                        matrix[y][x],
+                        matrix[x][y]
+                    ]
+
+            }
+
+        }
+
+        if (dir > 0) {
+
+            matrix.forEach(row => row.reverse())
+
+        } else {
+
+            matrix.reverse()
+
+        }
+
+    }
+
 }

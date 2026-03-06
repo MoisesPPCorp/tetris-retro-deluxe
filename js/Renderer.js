@@ -2,129 +2,91 @@ export class Renderer {
 
     constructor(canvas, arena, player) {
 
-        this.canvas = canvas;
-        this.context = canvas.getContext('2d');
+        this.canvas = canvas
+        this.context = canvas.getContext("2d")
 
-        this.arena = arena;
-        this.player = player;
+        this.context.scale(20, 20)
 
-        this.blockSize = 20;
+        this.arena = arena
+        this.player = player
 
-        this.canvas.width = this.arena.matrix[0].length * this.blockSize;
-        this.canvas.height = this.arena.matrix.length * this.blockSize;
+        this.colors = [
+            null,
+            "#FF595E",
+            "#1982C4",
+            "#8AC926",
+            "#FFCA3A",
+            "#6A4C93",
+            "#FF924C",
+            "#00C2A8"
+        ]
 
-        // Preview
-        this.preview = document.getElementById("preview");
+        this.previewCanvas = document.getElementById("preview")
+        this.previewContext = this.previewCanvas.getContext("2d")
 
-        if (this.preview) {
-            this.previewCtx = this.preview.getContext("2d");
-        }
+        this.previewContext.scale(20, 20)
+
     }
 
-    drawMatrix(matrix, offset) {
+    drawMatrix(matrix, offset, context = this.context) {
 
-        if (!matrix) return;
+        matrix.forEach((row, y) => {
 
-        const colors = [
-            null,
-            '#00FFFF',
-            '#FFFF00',
-            '#AA00FF',
-            '#FFA500',
-            '#0000FF',
-            '#00FF00',
-            '#FF0000'
-        ];
+            row.forEach((value, x) => {
 
-        for (let y = 0; y < matrix.length; y++) {
-            for (let x = 0; x < matrix[y].length; x++) {
+                if (value !== 0) {
 
-                if (matrix[y][x] !== 0) {
+                    context.fillStyle = this.colors[value]
 
-                    this.context.fillStyle = colors[matrix[y][x]];
+                    context.fillRect(
+                        x + offset.x,
+                        y + offset.y,
+                        1,
+                        1
+                    )
 
-                    this.context.fillRect(
-                        (x + offset.x) * this.blockSize,
-                        (y + offset.y) * this.blockSize,
-                        this.blockSize,
-                        this.blockSize
-                    );
+                    context.strokeStyle = "#000"
+                    context.lineWidth = 0.05
 
-                    this.context.strokeStyle = "#000";
-                    this.context.strokeRect(
-                        (x + offset.x) * this.blockSize,
-                        (y + offset.y) * this.blockSize,
-                        this.blockSize,
-                        this.blockSize
-                    );
+                    context.strokeRect(
+                        x + offset.x,
+                        y + offset.y,
+                        1,
+                        1
+                    )
+
                 }
-            }
-        }
+
+            })
+
+        })
+
+    }
+
+    draw() {
+
+        this.context.fillStyle = "#000"
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height)
+
+        this.drawMatrix(this.arena.matrix, { x: 0, y: 0 })
+
+        this.drawMatrix(this.player.matrix, this.player.pos)
+
+        this.drawPreview()
+
     }
 
     drawPreview() {
 
-    if (!this.previewCtx || !this.player.nextMatrix) return;
+        this.previewContext.fillStyle = "#000"
+        this.previewContext.fillRect(0, 0, 6, 6)
 
-    const matrix = this.player.nextMatrix;
+        if (this.player.nextMatrix) {
 
-    this.previewCtx.fillStyle = "#111";
-    this.previewCtx.fillRect(0,0,120,120);
+            this.drawMatrix(this.player.nextMatrix, { x: 1, y: 1 }, this.previewContext)
 
-    const size = 20;
+        }
 
-    // Centralização perfeita
-    const offsetX = (120 - matrix[0].length * size) / 2;
-    const offsetY = (120 - matrix.length * size) / 2;
-
-    matrix.forEach((row,y)=>{
-        row.forEach((value,x)=>{
-
-            if(value !== 0){
-
-                this.previewCtx.fillStyle = "#00FFFF";
-
-                this.previewCtx.fillRect(
-                    x * size + offsetX,
-                    y * size + offsetY,
-                    size,
-                    size
-                );
-
-                // ⭐ Bordas dos blocos
-                this.previewCtx.strokeStyle = "#000";
-                this.previewCtx.strokeRect(
-                    x * size + offsetX,
-                    y * size + offsetY,
-                    size,
-                    size
-                );
-            }
-
-        });
-    });
-}
-
-    draw() {
-
-        // Fundo
-        this.context.fillStyle = "#111";
-        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // ⭐ Arena + Player
-        this.drawMatrix(this.arena.matrix, { x: 0, y: 0 });
-        this.drawMatrix(this.player.matrix, this.player.pos);
-
-        // ⭐ Preview
-        this.drawPreview();
-
-        // ⭐ Bordas da arena (extremidades visuais)
-        this.context.strokeStyle = "#555";
-        this.context.strokeRect(
-            0,
-            0,
-            this.canvas.width,
-            this.canvas.height
-        );
     }
+
 }

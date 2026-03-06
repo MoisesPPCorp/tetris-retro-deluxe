@@ -1,83 +1,82 @@
-import { Arena } from './Arena.js';
-import { Player } from './Player.js';
-import { Renderer } from './Renderer.js';
+import { Arena } from "./Arena.js"
+import { Player } from "./Player.js"
+import { Renderer } from "./Renderer.js"
+import { saveScore, loadRanking } from "./ranking.js"
 
-const canvas = document.getElementById('tetris');
-const scoreElement = document.getElementById('score');
+const arena = new Arena(12, 20)
+const player = new Player(arena)
 
-const startBtn = document.getElementById('startBtn');
-const restartBtn = document.getElementById('restartBtn');
+const canvas = document.getElementById("tetris")
 
-const arena = new Arena(12, 20);
-const player = new Player(arena);
+const renderer = new Renderer(canvas, arena, player)
 
-const renderer = new Renderer(canvas, arena, player);
+let lastTime = 0
+let dropCounter = 0
+let running = false
 
-let lastTime = 0;
-let dropCounter = 0;
-let dropInterval = 1000;
-
-let gameRunning = false;
-
-// ⭐ Loop principal
 function update(time = 0) {
 
-    if (gameRunning) {
+    if (!running) return
 
-        const deltaTime = time - lastTime;
-        lastTime = time;
+    const delta = time - lastTime
+    lastTime = time
 
-        dropCounter += deltaTime;
+    dropCounter += delta
 
-        if (dropCounter > dropInterval) {
-            player.drop();
-            dropCounter = 0;
-        }
+    if (dropCounter > 1000) {
 
-        if (scoreElement) {
-            scoreElement.textContent = player.score;
-        }
+        player.drop()
+
+        dropCounter = 0
+
     }
 
-    renderer.draw();
+    renderer.draw()
 
-    requestAnimationFrame(update);
+    document.getElementById("score").textContent = player.score
+
+    requestAnimationFrame(update)
+
 }
 
-// ⭐ Botão iniciar
-if (startBtn) {
-    startBtn.addEventListener("click", () => {
-        gameRunning = true;
-        player.reset();
-    });
+function startGame() {
+
+    arena.matrix = arena.createMatrix(12, 20)
+
+    player.score = 0
+
+    player.reset()
+
+    running = true
+
+    update()
+
 }
 
-// ⭐ Botão reiniciar
-if (restartBtn) {
-    restartBtn.addEventListener("click", () => {
-        gameRunning = true;
-        player.reset();
-    });
+function restartGame() {
+
+    const name = document.getElementById("playerName").value || "Player"
+
+    saveScore(name, player.score)
+
+    loadRanking()
+
+    startGame()
+
 }
 
-// ⭐ Controles teclado
-document.addEventListener('keydown', event => {
+document.getElementById("startBtn").onclick = startGame
+document.getElementById("restartBtn").onclick = restartGame
 
-    if (!gameRunning) return;
+document.addEventListener("keydown", e => {
 
-    if (event.key === 'ArrowLeft') player.move(-1);
-    if (event.key === 'ArrowRight') player.move(1);
-    if (event.key === 'ArrowDown') player.drop();
-    if (event.key === 'ArrowUp') player.rotate(1);
-    if (event.key === 'z') player.rotate(-1);
+    if (!running) return
 
-    // Hard drop
-    if (event.key === ' ') {
-        while (!player.collide()) player.pos.y++;
-        player.pos.y--;
-        player.drop();
-    }
+    if (e.key === "ArrowLeft") player.move(-1)
+    if (e.key === "ArrowRight") player.move(1)
+    if (e.key === "ArrowDown") player.drop()
+    if (e.key === "ArrowUp") player.rotate()
 
-});
+})
 
-update();
+loadRanking()

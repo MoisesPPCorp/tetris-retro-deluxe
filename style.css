@@ -1,11 +1,25 @@
 body {
-    background-color: #222;
+    background: #111;
     color: white;
     text-align: center;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 20px;
 }
 
 canvas {
-    image-rendering: pixelated;
-    background: #111;
+    background: black;
+    border: 2px solid #555;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
 }

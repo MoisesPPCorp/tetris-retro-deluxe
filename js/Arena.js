@@ -1,43 +1,67 @@
 export class Arena {
-    constructor(width, height) {
-        this.matrix = this.createMatrix(width, height);
+
+    constructor(w, h) {
+
+        this.matrix = this.createMatrix(w, h)
+
     }
 
     createMatrix(w, h) {
-        const matrix = [];
+
+        const matrix = []
+
         while (h--) {
-            matrix.push(new Array(w).fill(0));
+
+            matrix.push(new Array(w).fill(0))
+
         }
-        return matrix;
+
+        return matrix
+
     }
 
     merge(player) {
+
         player.matrix.forEach((row, y) => {
+
             row.forEach((value, x) => {
+
                 if (value !== 0) {
-                    this.matrix[y + player.pos.y][x + player.pos.x] = value;
+
+                    this.matrix[y + player.pos.y][x + player.pos.x] = value
+
                 }
-            });
-        });
+
+            })
+
+        })
+
     }
 
-    sweep() {
-        let rowCount = 0;
+    clearLines(player) {
 
-        for (let y = this.matrix.length - 1; y >= 0; y--) {
+        outer: for (let y = this.matrix.length - 1; y >= 0; --y) {
 
-            if (this.matrix[y].every(v => v !== 0)) {
+            for (let x = 0; x < this.matrix[y].length; ++x) {
 
-                this.matrix.splice(y, 1);
-                this.matrix.unshift(
-                    new Array(this.matrix[0].length).fill(0)
-                );
+                if (this.matrix[y][x] === 0) {
 
-                rowCount++;
-                y++;
+                    continue outer
+
+                }
+
             }
+
+            this.matrix.splice(y, 1)
+
+            this.matrix.unshift(new Array(12).fill(0))
+
+            player.score += 10
+
+            ++y
+
         }
 
-        return rowCount;
     }
+
 }
