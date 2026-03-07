@@ -31,3 +31,13 @@ export function loadRanking() {
     })
 
 }
+
+export function isHighScore(score) {
+
+    const ranking = JSON.parse(localStorage.getItem("tetrisRanking")) || []
+
+    if (ranking.length < 5) return true
+
+    return score > ranking[ranking.length - 1].score
+
+}

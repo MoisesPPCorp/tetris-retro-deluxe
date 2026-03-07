@@ -2,36 +2,72 @@
 <html lang="pt-br">
 
 <head>
+
     <meta charset="UTF-8">
+
     <title>Tetris Ultra</title>
+
     <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
     <h1>Tetris Ultra</h1>
 
-    <input id="playerName" placeholder="Seu nome">
+    <div class="menu">
 
-    <br>
+        <button id="startBtn">Iniciar</button>
 
-    <button id="startBtn">Iniciar</button>
-    <button id="restartBtn">Reiniciar</button>
+        <button id="restartBtn">Reiniciar</button>
+
+    </div>
 
     <div class="container">
 
         <canvas id="tetris" width="240" height="400"></canvas>
 
-        <div>
+        <div class="side-panel">
 
             <h3>Próxima</h3>
+
             <canvas id="preview" width="120" height="120"></canvas>
 
             <h3>Pontuação: <span id="score">0</span></h3>
+
             <h3>Nível: <span id="level">1</span></h3>
 
             <h3>🏆 Ranking</h3>
+
             <ol id="rankingList"></ol>
+
+        </div>
+
+    </div>
+
+    <div id="gameOverScreen" class="gameover hidden">
+
+        <div class="gameover-box">
+
+            <h2>GAME OVER</h2>
+
+            <p>Pontuação: <span id="finalScore">0</span></p>
+
+            <div id="newRecord" class="hidden">
+
+                <p>🏆 Novo Recorde!</p>
+
+                <input id="playerNameInput" placeholder="Digite seu nome">
+
+                <br>
+
+                <button id="saveScoreBtn">Salvar Pontuação</button>
+
+            </div>
+
+            <br>
+
+            <button id="restartGameBtn">Jogar Novamente</button>
 
         </div>
 

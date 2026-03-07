@@ -94,14 +94,11 @@ export class Player {
 
         if (this.collide()) {
 
-            // GAME OVER
-            alert("GAME OVER")
-
-            this.arena.matrix.forEach(row => row.fill(0))
-
-            this.score = 0
+            return true
 
         }
+
+        return false
 
     }
 
@@ -144,11 +141,15 @@ export class Player {
 
             this.arena.merge(this)
 
-            this.reset()
+            const gameOver = this.reset()
 
             this.arena.clearLines(this)
 
+            return gameOver
+
         }
+
+        return false
 
     }
 

@@ -23,3 +23,70 @@ button {
     font-size: 16px;
     cursor: pointer;
 }
+
+/* GAME OVER */
+
+.gameover {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.9);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.gameover-box {
+
+    background: #1b1b1b;
+
+    padding: 40px;
+
+    border-radius: 10px;
+
+    border: 3px solid #444;
+
+    box-shadow: 0 0 25px #000;
+
+}
+
+.gameover h2 {
+
+    font-size: 42px;
+
+    color: #ff4d4d;
+
+    margin-bottom: 10px;
+
+}
+
+.gameover button {
+
+    background: #1982C4;
+    color: white;
+
+    border: none;
+
+    border-radius: 5px;
+
+}
+
+.gameover input {
+
+    padding: 8px;
+    margin-top: 10px;
+
+}
+
+.hidden {
+
+    display: none;
+
+}
